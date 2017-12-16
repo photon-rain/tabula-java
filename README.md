@@ -82,14 +82,3 @@ Clone this repo and run:
 ```
 mvn clean compile assembly:single
 ```
-
-## Contributing
-
-Interested in helping out? We'd love to have your help!
-
-You can help by:
-
-- [Reporting a bug](https://github.com/tabulapdf/tabula-java/issues).
-- Adding or editing documentation.
-- Contributing code via a Pull Request.
-- Spreading the word about `tabula-java` to people who might be able to benefit from using it.
