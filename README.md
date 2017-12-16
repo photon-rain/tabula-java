@@ -62,6 +62,13 @@ Tabula helps you extract tables from PDFs
  -u,--use-line-returns      Use embedded line returns in cells. (Only in
                             spreadsheet mode.)
  -v,--version               Print version and exit.
+
+New Flags for OpenPowerlifting:
+
+-x,--strikethrough          Treats numbers with a strikethough as negative
+- ,--red                    Treats numbers in red columns as negative
+- ,--diag                   Treats numbers with a diagonal line through them as negative
+
 ```
 
 It also includes a debugging tool, run `java -cp ./target/tabula-1.0.1-jar-with-dependencies.jar technology.tabula.debug.Debug -h` for the available options.
