@@ -19,6 +19,8 @@ public class Page extends Rectangle {
     private float minCharWidth;
     private float minCharHeight;
     private RectangleSpatialIndex<TextElement> spatial_index;
+    private List<Boolean> hasStrikethough;
+    private List<Boolean> hasRedBackground;
     private PDPage pdPage;
 
     public Page(float top, float left, float width, float height, int rotation, int page_number, PDPage pdPage) {
@@ -45,6 +47,8 @@ public class Page extends Rectangle {
         this.minCharHeight = minCharHeight;
         this.minCharWidth = minCharWidth;
         this.spatial_index = index;
+        this.hasStrikethough=hasStrikethough;
+        this.hasRedBackground=hasRedBackground;
     }
 
     

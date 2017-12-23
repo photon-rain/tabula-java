@@ -8,11 +8,16 @@ import org.apache.pdfbox.pdmodel.PDPage;
 public class ObjectExtractor {
 
     private final PDDocument pdfDocument;
+    private final Boolean checkLineThrough;
+    private final Boolean checkRed;
 
-    public ObjectExtractor(PDDocument pdfDocument) {
+    public ObjectExtractor(PDDocument pdfDocument,Boolean checkLineThrough,Boolean checkRed) {
         this.pdfDocument = pdfDocument;
+        this.checkLineThrough = checkLineThrough;
+        this.checkRed=checkRed;
     }
 
+    //need to modify this to do something with the underline/red information
     protected Page extractPage(Integer pageNumber) throws IOException {
 
         if (pageNumber > this.pdfDocument.getNumberOfPages() || pageNumber < 1) {
@@ -26,7 +31,7 @@ public class ObjectExtractor {
         se.processPage(p);
 
 
-        TextStripper pdfTextStripper = new TextStripper(this.pdfDocument, pageNumber);
+        TextStripper pdfTextStripper = new TextStripper(this.pdfDocument, pageNumber,checkLineThrough,checkRed);
 
         pdfTextStripper.process();
 
@@ -43,7 +48,8 @@ public class ObjectExtractor {
         }
 
         return new Page(0, 0, w, h, pageRotation, pageNumber, p, pdfTextStripper.textElements,
-                se.rulings, pdfTextStripper.minCharWidth, pdfTextStripper.minCharHeight, pdfTextStripper.spatialIndex);
+                se.rulings, pdfTextStripper.minCharWidth, pdfTextStripper.minCharHeight, 
+                pdfTextStripper.spatialIndex);
     }
 
     public PageIterator extract(Iterable<Integer> pages) {

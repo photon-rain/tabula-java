@@ -40,6 +40,9 @@ public class CommandLineApp {
     private String password;
     private TableExtractor tableExtractor;
 
+    private Boolean checkLineThrough;
+    private Boolean checkRed;
+
     public CommandLineApp(Appendable defaultOutput, CommandLine line) throws ParseException {
         this.defaultOutput = defaultOutput;
         this.pageArea = CommandLineApp.whichArea(line);
@@ -50,6 +53,10 @@ public class CommandLineApp {
         if (line.hasOption('s')) {
             this.password = line.getOptionValue('s');
         }
+
+        this.checkLineThrough = line.hasOption('x');
+        this.checkRed = line.hasOption('y');
+
     }
 
     public static void main(String[] args) {
@@ -177,7 +184,7 @@ public class CommandLineApp {
     }
 
     private PageIterator getPageIterator(PDDocument pdfDocument) throws IOException {
-        ObjectExtractor extractor = new ObjectExtractor(pdfDocument);
+        ObjectExtractor extractor = new ObjectExtractor(pdfDocument,checkLineThrough,checkRed);
         return (pages == null) ?
                 extractor.extract() :
                 extractor.extract(pages);
@@ -275,6 +282,8 @@ public class CommandLineApp {
         o.addOption("i", "silent", false, "Suppress all stderr output.");
         o.addOption("u", "use-line-returns", false, "Use embedded line returns in cells. (Only in spreadsheet mode.)");
         o.addOption("d", "debug", false, "Print detected table areas instead of processing.");
+        o.addOption("x", "linethrough", false, "Treat numbers with a line through them as negative.");
+        o.addOption("y", "red", false, "Treat numbers with a red background as negative.");
         o.addOption(Option.builder("b")
                 .longOpt("batch")
                 .desc("Convert all .pdfs in the provided directory.")
@@ -317,7 +326,6 @@ public class CommandLineApp {
                 .hasArg()
                 .argName("PAGES")
                 .build());
-
         return o;
     }
 
@@ -332,37 +340,37 @@ public class CommandLineApp {
         public TableExtractor() {
         }
 
-        public void setVerticalRulingPositions(List<Float> positions) {
-            this.verticalRulingPositions = positions;
-        }
-
-        public void setGuess(boolean guess) {
-            this.guess = guess;
-        }
-
-        public void setUseLineReturns(boolean useLineReturns) {
-            this.useLineReturns = useLineReturns;
-        }
-
-        public void setMethod(ExtractionMethod method) {
-            this.method = method;
-        }
-
-        public List<Table> extractTables(Page page) {
-            ExtractionMethod effectiveMethod = this.method;
-            if (effectiveMethod == ExtractionMethod.DECIDE) {
-                effectiveMethod = spreadsheetExtractor.isTabular(page) ?
-                        ExtractionMethod.SPREADSHEET :
-                        ExtractionMethod.BASIC;
+            public void setVerticalRulingPositions(List<Float> positions) {
+                this.verticalRulingPositions = positions;
             }
-            switch (effectiveMethod) {
-                case BASIC:
-                    return extractTablesBasic(page);
-                case SPREADSHEET:
-                    return extractTablesSpreadsheet(page);
-                default:
-                    return new ArrayList<>();
+
+            public void setGuess(boolean guess) {
+                this.guess = guess;
             }
+
+            public void setUseLineReturns(boolean useLineReturns) {
+                this.useLineReturns = useLineReturns;
+            }
+
+            public void setMethod(ExtractionMethod method) {
+                this.method = method;
+            }
+
+            public List<Table> extractTables(Page page) {
+                ExtractionMethod effectiveMethod = this.method;
+                if (effectiveMethod == ExtractionMethod.DECIDE) {
+                    effectiveMethod = spreadsheetExtractor.isTabular(page) ?
+                            ExtractionMethod.SPREADSHEET :
+                            ExtractionMethod.BASIC;
+                }
+                switch (effectiveMethod) {
+                    case BASIC:
+                        return extractTablesBasic(page);
+                    case SPREADSHEET:
+                        return extractTablesSpreadsheet(page);
+                    default:
+                        return new ArrayList<>();
+                }
         }
 
         public List<Table> extractTablesBasic(Page page) {

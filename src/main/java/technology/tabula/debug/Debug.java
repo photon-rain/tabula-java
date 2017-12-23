@@ -217,7 +217,7 @@ public class Debug {
                                   boolean drawDetectedTables) throws IOException {
         PDDocument document = PDDocument.load(new File(pdfPath));
 
-        ObjectExtractor oe = new ObjectExtractor(document);
+        ObjectExtractor oe = new ObjectExtractor(document,false,false);
 
         Page page = oe.extract(pageNumber + 1);
 

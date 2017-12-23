@@ -43,6 +43,8 @@ public class BasicExtractionAlgorithm implements ExtractionAlgorithm {
             return Arrays.asList(new Table[] { Table.empty() });
         }
         
+
+        //this is where the characters are merged to words
         List<TextChunk> textChunks = this.verticalRulings == null ? TextElement.mergeWords(page.getText()) : TextElement.mergeWords(page.getText(), this.verticalRulings);
         List<Line> lines = TextChunk.groupByLines(textChunks);
         List<Float> columns = null;

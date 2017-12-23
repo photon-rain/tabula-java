@@ -14,13 +14,27 @@ public class TextElement extends Rectangle implements HasText {
     private float widthOfSpace, dir;
     private static final float AVERAGE_CHAR_TOLERANCE = 0.3f;
 
+
+    private Boolean hasLineThrough;
+    private Boolean hasRed;
+
     public TextElement(float y, float x, float width, float height,
                        PDFont font, float fontSize, String c, float widthOfSpace) {
-        this(y, x, width, height, font, fontSize, c, widthOfSpace, 0f);
+        this(y, x, width, height, font, fontSize, c, false,false, widthOfSpace, 0f);
+    }
+    public TextElement(float y, float x, float width, float height,
+                       PDFont font, float fontSize, String c, float widthOfSpace,float dir) {
+        this(y, x, width, height, font, fontSize, c, false,false, widthOfSpace, dir);
+    }
+
+
+    public TextElement(float y, float x, float width, float height,
+                       PDFont font, float fontSize, String c,Boolean hasLineThrough,Boolean hasRed, float widthOfSpace) {
+        this(y, x, width, height, font, fontSize, c, hasLineThrough,hasRed, widthOfSpace, 0f);
     }
 
     public TextElement(float y, float x, float width, float height,
-                       PDFont font, float fontSize, String c, float widthOfSpace, float dir) {
+                       PDFont font, float fontSize, String c,Boolean hasLineThrough,Boolean hasRed, float widthOfSpace, float dir) {
         super();
         this.setRect(x, y, width, height);
         this.text = c;
@@ -28,6 +42,8 @@ public class TextElement extends Rectangle implements HasText {
         this.fontSize = fontSize;
         this.font = font;
         this.dir = dir;
+        this.hasLineThrough=hasLineThrough;
+        this.hasRed=hasRed;
     }
 
     @Override public String getText() {
@@ -48,6 +64,14 @@ public class TextElement extends Rectangle implements HasText {
 
     public float getFontSize() {
         return fontSize;
+    }
+
+    public Boolean getLineThrough(){
+        return hasLineThrough;
+    }
+
+    public Boolean getRed(){
+        return hasRed;
     }
 
     @Override public String toString() {
