@@ -65,8 +65,8 @@ Tabula helps you extract tables from PDFs
 
 New Flags for OpenPowerlifting:
 
--x,--linethrough          Treats numbers with a linethough as negative
--y ,--red                 Treats numbers in red cells as negative
+-x,--linethrough          Treats numbers with a line through them as negative
+-y ,--red                 Treats numbers in red columns as negative
 
 ```
 
